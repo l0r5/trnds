@@ -1,0 +1,2 @@
+# trnds
+Groovy Playground Project
