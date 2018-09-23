@@ -13,6 +13,7 @@ pipeline {
         stage('trnds') {
           steps {
             echo 'Starting stage: trnds...'
+            load "src/main/groovy/TrendFetcher.groovy"
             echo 'Completed stage: trnds'
           }
         }
