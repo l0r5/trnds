@@ -1,4 +1,4 @@
-@Grab('jenkins-shared-library')
+library('jenkins-shared-library')
 
 import groovy.json.JsonSlurper
 import java.text.SimpleDateFormat
