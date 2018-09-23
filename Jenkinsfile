@@ -1,3 +1,5 @@
+@library('jenkins-shared-library')
+
 pipeline {
   agent {
     docker {
