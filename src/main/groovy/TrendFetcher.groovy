@@ -90,8 +90,8 @@ def save(){
 }
 
 def static extractApiData() {
-    def jsonSlurper = new JsonSlurper()
     File apiDataFile = new File('../resources/api_data.json')
+    def jsonSlurper = new JsonSlurper()
     def apiDataMap = jsonSlurper.parseText(apiDataFile.text)
     return apiDataMap
 }
