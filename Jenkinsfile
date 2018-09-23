@@ -15,7 +15,8 @@ pipeline {
         }
         stage('trnds') {
           steps {
-            writeFile(file: 'trnds.log', text: 'trnds')
+            load "src/main/groovy/TrendFetcher.groovy"
+            writeFile(file: 'trnds.log', text: 'trnds stage completed')
           }
         }
       }
