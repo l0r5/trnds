@@ -1,66 +1,84 @@
+@Library('jenkins-shared-library')
+
 import groovy.json.JsonSlurper
 import java.text.SimpleDateFormat
 
+node('trnds') {
 
-apiData = [:]
-fetchedData = ""
-processedData = [:]
+    apiData = [:]
+    fetchedData = ""
+    processedData = [:]
 
-def script() {
-    println("Start script")
-    init()
-    fetch()
-    processData()
-    save()
-}
+    try {
 
-def init() {
-    println "Initialize..."
-    apiData = extractApiData()
-}
+        stage('Initialization') {
+            echo "Initialize..."
+            apiData = extractApiData()
+        }
 
-def fetch() {
-    def providersMap = apiData["providers"]
-    def urlList = []
+        stage('Fetch Data') {
+            def providersMap = apiData["providers"]
+            def urlList = []
 
-    providersMap.each {
-        def baseUrl = it["baseUrl"] as String
-        def query = "?part=snippet,contentDetails&chart=mostPopular&regionCode=US&maxResults=25&"
-        def apiKey = "key=" + it["apiKey"]
-        urlList.add(baseUrl + query + apiKey)
-    }
+            providersMap.each {
+                def baseUrl = it["baseUrl"] as String
+                def query = "?part=snippet,contentDetails&chart=mostPopular&regionCode=US&maxResults=25&"
+                def apiKey = "key=" + it["apiKey"]
+                urlList.add(baseUrl + query + apiKey)
+            }
 
-    println "GET Following URLs:"
-    urlList.each {
-        println it.toString()
+            echo "GET Following URLs:"
+            urlList.each {
+                println it.toString()
 
-        def connection = new URL(it as String).openConnection() as HttpURLConnection
+                def connection = new URL(it as String).openConnection() as HttpURLConnection
 
-        // set some headers
-        connection.setRequestProperty('User-Agent', 'groovy-2.4.15')
-        connection.setRequestProperty('Accept', 'application/json')
+                // set some headers
+                connection.setRequestProperty('User-Agent', 'groovy-2.4.15')
+                connection.setRequestProperty('Accept', 'application/json')
 
-        // get the response code - automatically sends the request
-        println "Response code: " + connection.responseCode
-        fetchedData = connection.inputStream.text
-    }
-}
-
-def processData() {
-    println "Process fetched data..."
-    def date = new Date()
-    def sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss")
-    processedData << ["date": sdf.format(date)]
-    if (fetchedData != null) {
-        apiData.providers.each {
-            switch (it.name) {
-                case "YouTube":
-                    processYouTubeData()
+                // get the response code - automatically sends the request
+                echo "Response code: " + connection.responseCode
+                fetchedData = connection.inputStream.text
             }
         }
-    } else {
-        println "No data was fetched."
+        stage('Process fetched Data') {
+            echo "Process fetched data..."
+            def date = new Date()
+            def sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss")
+            processedData << ["date": sdf.format(date)]
+            if (fetchedData != null) {
+                apiData.providers.each {
+                    switch (it.name) {
+                        case "YouTube":
+                            processYouTubeData()
+                    }
+                }
+            } else {
+                echo "No data was fetched."
+            }
+        }
+        stage('Persist to MongoDB') {
+            echo("Save data...")
+            MongoDBService.save(processedData)
+        }
+
+    } catch (Exception e) {
+        echo e.toString()
+        e.stackTrace.each {
+            echo it.toString()
+        }
+        currentBuild.result = "FAILED"
+    } finally {
+        echo currentBuild.result
     }
+}
+
+def static extractApiData() {
+    File apiDataFile = new File('../../../resources/api_data.json')
+    def jsonSlurper = new JsonSlurper()
+    def apiDataMap = jsonSlurper.parseText(apiDataFile.text)
+    return apiDataMap
 }
 
 def processYouTubeData() {
@@ -82,17 +100,3 @@ def processYouTubeData() {
     }
     processedData << ["youtube": youtubeVideos]
 }
-
-def save(){
-    println("Save data...")
-    MongoDBService.save(processedData)
-}
-
-def static extractApiData() {
-    File apiDataFile = new File('../../../resources/api_data.json')
-    def jsonSlurper = new JsonSlurper()
-    def apiDataMap = jsonSlurper.parseText(apiDataFile.text)
-    return apiDataMap
-}
-
-script()
