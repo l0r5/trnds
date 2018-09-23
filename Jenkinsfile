@@ -19,5 +19,6 @@ pipeline {
             echo 'Completed stage: trnds'
           }
         }
+       }
    }
 }
