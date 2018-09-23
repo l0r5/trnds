@@ -7,16 +7,15 @@ pipeline {
   }
   stages {
     stage('build') {
-      parallel {
-        stage('build') {
-          steps {
+        steps {
             sh 'mvn --version'
           }
         }
         stage('trnds') {
           steps {
+            echo 'Starting stage: trnds...'
             load "src/main/groovy/TrendFetcher.groovy"
-            writeFile(file: 'trnds.log', text: 'trnds stage completed')
+            echo 'Completed stage: trnds'
           }
         }
       }

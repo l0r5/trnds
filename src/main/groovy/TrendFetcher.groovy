@@ -1,5 +1,6 @@
-import groovy.json.JsonSlurper
+@Grab('jenkins-shared-library')
 
+import groovy.json.JsonSlurper
 import java.text.SimpleDateFormat
 
 
@@ -90,7 +91,7 @@ def save(){
 }
 
 def static extractApiData() {
-    File apiDataFile = new File('../resources/api_data.json')
+    File apiDataFile = new File('../../../resources/api_data.json')
     def jsonSlurper = new JsonSlurper()
     def apiDataMap = jsonSlurper.parseText(apiDataFile.text)
     return apiDataMap
