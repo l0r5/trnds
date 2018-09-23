@@ -17,7 +17,6 @@ pipeline {
             def rootDir = pwd()
             echo "rootdir: ${rootDir}"
             def trnds = load "${rootDir}/src/main/groovy/TrendFetcher.groovy"
-            trnds.node()
             echo 'Completed stage: trnds'
           }
         }
