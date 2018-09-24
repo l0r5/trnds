@@ -13,9 +13,7 @@ pipeline {
         stage('trnds') {
           steps {
             echo 'Starting stage: trnds...'
-                def rootDir = pwd()
-                echo "rootdir: ${rootDir}"
-                def trnds = load "/src/main/groovy/TrendFetcher.groovy"
+                def trnds = load "$(pwd())/src/main/groovy/TrendFetcher.groovy"
             echo 'Completed stage: trnds'
       }
     }
