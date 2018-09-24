@@ -15,7 +15,7 @@ pipeline {
             echo 'Starting stage: trnds...'
                 rootDir = pwd()
                 echo "rootdir: ${rootDir}"
-                trnds = load "${rootDir}/src/main/groovy/TrendFetcher.groovy"
+                trnds = load "/src/main/groovy/TrendFetcher.groovy"
             echo 'Completed stage: trnds'
       }
     }
