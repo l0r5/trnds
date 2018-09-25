@@ -15,7 +15,7 @@ node('trnds') {
 
         stage('Initialization') {
             echo "Initialize..."
-            String apiDataFile = readFile("${env.WORKSPACE}/resources/api_data.json")
+            String apiDataFile = readJSON file: "${env.WORKSPACE}/resources/api_data.json"
             apiData = new JsonSlurper().parseText(apiDataFile)
         }
 
