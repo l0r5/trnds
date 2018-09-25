@@ -75,9 +75,9 @@ node('trnds') {
 }
 
 def static extractApiData() {
-    File apiDataFile = readFile('api_data.json')
+    String apiDataFile = readFile('api_data.json')
     def jsonSlurper = new JsonSlurper()
-    def apiDataMap = jsonSlurper.parseText(apiDataFile.text)
+    def apiDataMap = jsonSlurper.parseText(apiDataFile)
     return apiDataMap
 }
 
