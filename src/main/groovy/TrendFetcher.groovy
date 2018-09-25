@@ -15,7 +15,7 @@ node('trnds') {
 
         stage('Initialization') {
             echo "Initialize..."
-            String apiDataFile = readFile(file: "/resources/api_data.json")
+            def apiDataFile = readJSON(file: '/resources/api_data.json')
             apiData = new JsonSlurper().parseText(apiDataFile)
         }
 
