@@ -1,6 +1,8 @@
 import groovy.json.JsonSlurper
 import java.text.SimpleDateFormat
 
+library 'jenkins-shared-library'
+
 node('trnds') {
 
     apiData = [:]
