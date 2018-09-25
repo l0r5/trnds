@@ -1,3 +1,5 @@
+#!/usr/bin/env groovy
+
 import groovy.json.JsonSlurper
 import java.text.SimpleDateFormat
 
@@ -13,7 +15,9 @@ node('trnds') {
 
         stage('Initialization') {
             echo "Initialize..."
-            apiData = extractApiData()
+            env.WORKSPACE = pwd()
+            String apiDataFile = readFile("${env.WORKSPACE}/api_data.json")
+            apiData = new JsonSlurper().parseText(apiDataFile)
         }
 
         stage('Fetch Data') {
@@ -58,6 +62,9 @@ node('trnds') {
                 echo "No data was fetched."
             }
         }
+
+
+
         stage('Persist to MongoDB') {
             echo("Save data...")
             MongoDBService.save(processedData)
@@ -74,12 +81,7 @@ node('trnds') {
     }
 }
 
-def static extractApiData() {
-    String apiDataFile = readFile("${WORKSPACE}/api_data.json")
-    def jsonSlurper = new JsonSlurper()
-    def apiDataMap = jsonSlurper.parseText(apiDataFile)
-    return apiDataMap
-}
+
 
 def processYouTubeData() {
     def youtubeVideos = []
