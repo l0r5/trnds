@@ -12,8 +12,9 @@ pipeline {
       }
     }
     stage('trnds') {
-      steps
+      steps {
         load 'src/main/groovy/TrendFetcher.groovy'
+       }
     }
   }
 }
