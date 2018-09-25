@@ -75,7 +75,7 @@ node('trnds') {
 }
 
 def static extractApiData() {
-    File apiDataFile = new File('../../../resources/api_data.json')
+    File apiDataFile = new File('resources/api_data.json')
     def jsonSlurper = new JsonSlurper()
     def apiDataMap = jsonSlurper.parseText(apiDataFile.text)
     return apiDataMap
