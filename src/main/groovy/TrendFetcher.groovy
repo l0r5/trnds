@@ -14,9 +14,10 @@ node('trnds') {
     try {
 
         stage('Initialization') {
-            echo "Initialize..."
+            echo 'Initialize...'
             def apiDataFile = libraryResource('api_data.json')
-            apiData = new JsonSlurper().parseText(apiDataFile)
+            echo 'File has been read'
+            apiData = parseJSON(apiDataFile)
         }
 
         stage('Fetch Data') {
@@ -100,4 +101,8 @@ def processYouTubeData() {
                 "\nUrl: " + video.url)
     }
     processedData << ["youtube": youtubeVideos]
+}
+
+def parseJSON(jsonFile) {
+    return new JsonSlurper().parseText(jsonFile)
 }
