@@ -1,5 +1,5 @@
 #!/usr/bin/env groovy
-
+import com.cloudbees.groovy.cps.NonCPS
 import groovy.json.JsonSlurper
 import java.text.SimpleDateFormat
 
@@ -103,6 +103,8 @@ def processYouTubeData() {
     processedData << ["youtube": youtubeVideos]
 }
 
+@NonCPS
 def parseJSON(jsonFile) {
-    return new JsonSlurper().parseText(jsonFile)
+    final slurper = new JsonSlurper()
+    return new HashMap<>(slurper.parseText(jsonFile))
 }
