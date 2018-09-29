@@ -105,6 +105,5 @@ def processYouTubeData() {
 
 @NonCPS
 def parseJSON(jsonFile) {
-    final slurper = new JsonSlurper()
-    return new HashMap<>(slurper.parseText(jsonFile))
+    return new JsonSlurper().parseText(jsonFile)
 }
