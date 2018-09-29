@@ -15,7 +15,7 @@ node('trnds') {
 
         stage('Initialization') {
             echo "Initialize..."
-            def apiDataFile = readFile(file: "${env.WROKSPACE}/resources/api_data.json")
+            def apiDataFile = libraryResource('api_data.json')
             apiData = new JsonSlurper().parseText(apiDataFile)
         }
 
