@@ -105,9 +105,5 @@ def processYouTubeData() {
 
 @NonCPS
 def parseJSON(jsonFile) {
-    def object = new JsonSlurper().parseText(jsonFile)
-    if(object instanceof groovy.json.internal.LazyMap) {
-        return new HashMap<>(object)
-    }
-    return object
+    return new JsonSlurper().parseText(jsonFile)
 }
