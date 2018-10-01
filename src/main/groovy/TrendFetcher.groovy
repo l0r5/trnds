@@ -106,8 +106,6 @@ def processYouTubeData() {
 
 @NonCPS
 static parseJSON(jsonFile) {
-    def lazyMap = new JsonSlurperClassic().parseText(jsonFile)
-    def m = [:]
-    m.putAll(lazyMap)
-    return m
+    def map = new groovy.json.JsonSlurperClassic().parseText(jsonFile)
+    return map
 }
