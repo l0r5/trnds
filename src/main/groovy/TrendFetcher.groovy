@@ -1,6 +1,6 @@
 #!/usr/bin/env groovy
 import com.cloudbees.groovy.cps.NonCPS
-import groovy.json.JsonSlurperClassic
+import groovy.json.JsonSlurper
 import java.text.SimpleDateFormat
 
 library 'jenkins-shared-library'
@@ -85,7 +85,7 @@ node('trnds') {
 
 def processYouTubeData() {
     def youtubeVideos = []
-    def jsonSlurper = new JsonSlurperClassic()
+    def jsonSlurper = new JsonSlurper()
     fetchedData = jsonSlurper.parseText(fetchedData as String)
     fetchedData.items.snippet.eachWithIndex { it, count ->
         def video = [
@@ -105,5 +105,8 @@ def processYouTubeData() {
 
 @NonCPS
 static parseJSON(jsonFile) {
-    return new JsonSlurperClassic().parseText(jsonFile)
+    def lazyMap = new JsonSlurper().parseText(jsonFile)
+    def m = [:]
+    m.putAll(lazyMap)
+    return m
 }
