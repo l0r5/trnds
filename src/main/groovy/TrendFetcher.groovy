@@ -25,7 +25,7 @@ node('trnds') {
             def urlList = []
 
             providersMap.each {
-                def baseUrl = it["baseUrl"] as String
+                def baseUrl = it["baseUrl"]
                 def query = "?part=snippet,contentDetails&chart=mostPopular&regionCode=US&maxResults=25&"
                 def apiKey = "key=" + it["apiKey"]
                 urlList.add(baseUrl + query + apiKey)
@@ -104,10 +104,6 @@ def processYouTubeData() {
 }
 
 @NonCPS
-def parseJSON(jsonFile) {
-    def object = new JsonSlurper().parseText(jsonFile)
-    if(object instanceof groovy.json.internal.LazyMap) {
-        return new HashMap<>(object)
-    }
-    return object
+static parseJSON(jsonFile) {
+    return new JsonSlurper().parseText(jsonFile)
 }
