@@ -1,15 +1,16 @@
 #!/usr/bin/env groovy
-import groovy.json.JsonSlurperClassic
 
 import java.text.SimpleDateFormat
 
 library 'jenkins-shared-library'
 
+apiData = [:]
+fetchedData = ""
+processedData = [:]
+
 node('trnds') {
 
-    apiData = [:]
-    fetchedData = ""
-    processedData = [:]
+
 
     try {
 
@@ -35,17 +36,8 @@ node('trnds') {
             urlList.each {
                 echo "${it}"
                 def response = httpRequest it
-
-                echo "Status: " +response.status
-                echo "Content: "+response.content
-
-//                // set some headers
-//                connection.setRequestProperty('User-Agent', 'groovy-2.4.15')
-//                connection.setRequestProperty('Accept', 'application/json')
-
-//                // get the response code - automatically sends the request
-//                echo "Response code: " + connection.responseCode
-//                fetchedData = connection.inputStream.text
+                echo "Status: ${response.status}"
+                fetchedData = response.content
             }
         }
         stage('Process fetched Data') {
@@ -81,18 +73,16 @@ node('trnds') {
     }
 }
 
-
-
 def processYouTubeData() {
     def youtubeVideos = []
-    def jsonSlurper = new JsonSlurperClassic()
-    fetchedData = jsonSlurper.parseText(fetchedData as String)
-    fetchedData.items.snippet.eachWithIndex { it, count ->
+    def fetchedYouTubeData = readJSON(text: "${fetchedData}")
+
+    fetchedYouTubeData.items.snippet.eachWithIndex { it, count ->
         def video = [
                 "publishedAt": new Date().parse("yyyy-MM-dd'T'HH:mm:ss.SSSX",it.publishedAt as String),
                 "title"      : it.title,
                 "description": it.description,
-                "url"        : "https://www.youtube.com/watch?v=" + fetchedData.items[count].id as String
+                "url"        : "https://www.youtube.com/watch?v=" + fetchedYouTubeData.items[count].id as String
         ]
         youtubeVideos.add(video)
         println("Built Video:" +
