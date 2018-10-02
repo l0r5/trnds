@@ -80,10 +80,12 @@ def processYouTubeData() {
 
     fetchedYouTubeData.items.snippet.eachWithIndex { it, count ->
 
-        def sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
+        // TODO Jenkins parse Date
+//        def sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
 
         def video = [
-                "publishedAt": sdf.parse(it.publishedAt.toString()).format('yyyy/MM/dd HH:mm:ss'),
+//                "publishedAt": sdf.parse(it.publishedAt.toString()),
+                "publishedAt": it.publishedAt.toString(),
                 "title"      : it.title,
                 "description": it.description,
                 "url"        : "https://www.youtube.com/watch?v=" + fetchedYouTubeData.items[count].id.toString()
