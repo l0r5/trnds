@@ -58,10 +58,11 @@ node('trnds') {
             }
         }
 
-        stage('Persist to MongoDB') {
-            echo("Save data...")
-            MongoDBService.save(processedData)
-        }
+        //TODO Persist to DB
+//        stage('Persist to MongoDB') {
+//            echo("Save data...")
+//            MongoDBService.save(processedData)
+//        }
 
     } catch (Exception e) {
         echo e.toString()
