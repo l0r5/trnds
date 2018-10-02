@@ -83,7 +83,7 @@ def processYouTubeData() {
         def sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
 
         def video = [
-                "publishedAt": sdf.parse(it.publishedAt.toString()),
+                "publishedAt": sdf.parse(it.publishedAt.toString()).format('yyyy/MM/dd HH:mm:ss'),
                 "title"      : it.title,
                 "description": it.description,
                 "url"        : "https://www.youtube.com/watch?v=" + fetchedYouTubeData.items[count].id.toString()
