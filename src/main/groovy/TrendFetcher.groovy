@@ -16,9 +16,9 @@ node('trnds') {
 
         stage('Initialization') {
             echo 'Initialize...'
-            def apiDataFile = libraryResource('api_data.json')
+            def apiDataFile = readJSON file:'api_data.json'
             echo 'File has been read'
-            apiData = parseJSON(apiDataFile)
+            // apiData = parseJSON(apiDataFile)
         }
 
         stage('Fetch Data') {
