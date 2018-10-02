@@ -34,7 +34,9 @@ node('trnds') {
             echo "GET Following URLs:"
             urlList.each {
                 echo "${it.toString()}"
-                def connection = new URL(it.toString()).openConnection()
+                def connection = new URL(it.toString())
+
+                connection.openConnection()
 
                 // set some headers
                 connection.setRequestProperty('User-Agent', 'groovy-2.4.15')
