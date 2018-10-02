@@ -79,10 +79,10 @@ def processYouTubeData() {
 
     fetchedYouTubeData.items.snippet.eachWithIndex { it, count ->
         def video = [
-                "publishedAt": new Date().parse("yyyy-MM-dd'T'HH:mm:ss.SSSX",it.publishedAt as String),
+                "publishedAt": new Date().parse("yyyy-MM-dd'T'HH:mm:ss.SSSX",it.publishedAt.toString()),
                 "title"      : it.title,
                 "description": it.description,
-                "url"        : "https://www.youtube.com/watch?v=" + fetchedYouTubeData.items[count].id as String
+                "url"        : "https://www.youtube.com/watch?v=" + fetchedYouTubeData.items[count].id.toString()
         ]
         youtubeVideos.add(video)
         println("Built Video:" +
