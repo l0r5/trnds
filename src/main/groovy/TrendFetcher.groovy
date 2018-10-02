@@ -1,5 +1,4 @@
 #!/usr/bin/env groovy
-import com.cloudbees.groovy.cps.NonCPS
 import groovy.json.JsonSlurperClassic
 
 import java.text.SimpleDateFormat
@@ -16,12 +15,12 @@ node('trnds') {
 
         stage('Initialization') {
             echo 'Initialize...'
-            def apiDataFile = readJSON(text: libraryResource('api_data.json'))
-            echo 'File has been read'
-            // apiData = parseJSON(apiDataFile)
+            apiData = readJSON(text: libraryResource('api_data.json'))
+            echo "File has been read: \n${apiData}"
         }
 
         stage('Fetch Data') {
+            echo 'Fetch Data'
             def providersMap = apiData["providers"]
             def urlList = []
 
@@ -64,8 +63,6 @@ node('trnds') {
             }
         }
 
-
-
         stage('Persist to MongoDB') {
             echo("Save data...")
             MongoDBService.save(processedData)
@@ -102,10 +99,4 @@ def processYouTubeData() {
                 "\nUrl: " + video.url)
     }
     processedData << ["youtube": youtubeVideos]
-}
-
-@NonCPS
-static parseJSON(jsonFile) {
-    def map = new groovy.json.JsonSlurperClassic().parseText(jsonFile)
-    return map
 }
