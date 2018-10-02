@@ -33,18 +33,19 @@ node('trnds') {
 
             echo "GET Following URLs:"
             urlList.each {
-                echo "${it.toString()}"
-                def connection = new URL(it.toString())
+                echo "${it}"
+                def response = httpRequest it
 
-                connection.openConnection()
+                echo "Status: " +response.status
+                echo "Content: "+response.content
 
-                // set some headers
-                connection.setRequestProperty('User-Agent', 'groovy-2.4.15')
-                connection.setRequestProperty('Accept', 'application/json')
+//                // set some headers
+//                connection.setRequestProperty('User-Agent', 'groovy-2.4.15')
+//                connection.setRequestProperty('Accept', 'application/json')
 
-                // get the response code - automatically sends the request
-                echo "Response code: " + connection.responseCode
-                fetchedData = connection.inputStream.text
+//                // get the response code - automatically sends the request
+//                echo "Response code: " + connection.responseCode
+//                fetchedData = connection.inputStream.text
             }
         }
         stage('Process fetched Data') {
