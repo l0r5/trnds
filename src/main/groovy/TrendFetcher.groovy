@@ -1,4 +1,5 @@
 #!/usr/bin/env groovy
+import org.codehaus.groovy.runtime.DateGroovyMethods
 
 import java.text.SimpleDateFormat
 
@@ -80,7 +81,7 @@ def processYouTubeData() {
     fetchedYouTubeData.items.snippet.eachWithIndex { it, count ->
 
         def video = [
-                "publishedAt": new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX").parse(it.publishedAt.toString()),
+                "publishedAt": new Date(it.publishedAt.toString()),
                 "title"      : it.title,
                 "description": it.description,
                 "url"        : "https://www.youtube.com/watch?v=" + fetchedYouTubeData.items[count].id.toString()
