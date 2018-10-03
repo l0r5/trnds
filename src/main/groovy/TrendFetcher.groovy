@@ -1,5 +1,4 @@
 #!/usr/bin/env groovy
-import org.codehaus.groovy.runtime.DateGroovyMethods
 
 import java.text.SimpleDateFormat
 
@@ -9,9 +8,7 @@ apiData = [:]
 fetchedData = ""
 processedData = [:]
 
-node('trnds') {
-
-
+node('master') {
 
     try {
 
@@ -83,9 +80,9 @@ def processYouTubeData() {
 
         // TODO Jenkins parse Date
 //        def sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
+//                "publishedAt": sdf.parse(it.publishedAt.toString()),
 
         def video = [
-//                "publishedAt": sdf.parse(it.publishedAt.toString()),
                 "publishedAt": it.publishedAt.toString(),
                 "title"      : it.title,
                 "description": it.description,
