@@ -1,8 +1,6 @@
-#!/usr/bin/env groovy
-
 import java.text.SimpleDateFormat
 
-library 'jenkins-shared-library'
+@library('jenkins-shared-Library')
 
 apiData = [:]
 fetchedData = ""
